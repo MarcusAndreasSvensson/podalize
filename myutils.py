@@ -1,16 +1,19 @@
-from myutils import *
-import whisper
-import time
 import datetime
-from pyannote.audio import Pipeline
 import json
 import os
 import pickle
-import matplotlib.pyplot as plt
-from pytube import YouTube
+import time
+
+# import matplotlib.pyplot as plt
+import whisper
+from pyannote.audio import Pipeline
 from pydub import AudioSegment
-import streamlit as st
-verbose = False
+from pytube import YouTube
+
+from myutils import *
+
+# import streamlit as st
+verbose = True
 
 def youtube_downloader(url, destination, bitrate="48k", verbose=True):
     video = YouTube(str(url))
@@ -240,15 +243,15 @@ def get_world_cloud(result, speakers_dict, path2figs="./data/logs"):
     for sp in speakers:
         words = ''.join([seg['text'] for seg in result['segments'] if seg.get('speaker')==sp])
         wordcloud = WordCloud(max_font_size=40, background_color='white').generate(words)
-        fig = plt.figure()
-        plt.imshow(wordcloud, interpolation="bilinear")
-        plt.title(speakers_dict[sp])
-        plt.axis("off")
-        st.pyplot(fig)
+        # fig = plt.figure()
+        # plt.imshow(wordcloud, interpolation="bilinear")
+        # plt.title(speakers_dict[sp])
+        # plt.axis("off")
+        # st.pyplot(fig)
         
         p2f = f"{path2figs}/{speakers_dict[sp]}.png"
         figs.append(p2f)
-        plt.savefig(p2f)    
+        # plt.savefig(p2f)    
     return figs
 
 def get_audio_format(p2a, verbose=False):
@@ -259,6 +262,7 @@ def get_audio_format(p2a, verbose=False):
     if verbose:
         print(f"The audio file is in the {audio_format} format.")
     return audio_format
+
 def audio2wav(p2audio, verbose=False):
     if ".wav" in p2audio:
         if verbose:
